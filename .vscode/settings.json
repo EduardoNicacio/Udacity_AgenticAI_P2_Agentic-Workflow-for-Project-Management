@@ -4,6 +4,7 @@
         "csvfile",
         "dotenv",
         "embbedings",
+        "linalg",
         "Nanodegree",
         "pytest",
         "Vocareum"
