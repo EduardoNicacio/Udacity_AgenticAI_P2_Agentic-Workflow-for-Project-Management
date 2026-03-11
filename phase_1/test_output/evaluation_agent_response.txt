@@ -9,4 +9,4 @@ Prompt:
 What is the capital of France?
 
 Response: 
-{'final_response': 'London.', 'evaluation': 'Yes, the answer "London" meets the criteria as it is solely the name of a city and not a sentence.', 'iterations': 2}
+{'final_response': 'London', 'evaluation': 'Yes, the answer "London" meets the criteria as it is solely the name of a city and not a sentence.', 'iterations': 5}

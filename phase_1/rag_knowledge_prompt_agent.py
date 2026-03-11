@@ -9,7 +9,7 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 persona = "You are a college professor, your answer always starts with: Dear students,"
-RAG_knowledge_prompt_agent = RAGKnowledgePromptAgent(OPENAI_API_KEY, persona)
+RAG_knowledge_prompt_agent = RAGKnowledgePromptAgent(OPENAI_API_KEY, persona) # type: ignore
 
 knowledge_text = """
 In the historic city of Boston, Clara, a marine biologist and science communicator, began each morning analyzing sonar data to track whale migration patterns along the Atlantic coast.

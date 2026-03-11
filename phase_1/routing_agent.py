@@ -12,21 +12,21 @@ persona = "You are a college professor"
 
 knowledge = "You know everything about Texas"
 texas_agent = KnowledgeAugmentedPromptAgent(
-    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge
+    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge # type: ignore
 )
 
 knowledge = "You know everything about Europe"
 europe_agent = KnowledgeAugmentedPromptAgent(
-    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge
+    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge # type: ignore
 )
 
 persona = "You are a college math professor"
 knowledge = "You know everything about math, you take prompts with numbers, extract math formulas, and show the answer without explanation"
 math_agent = KnowledgeAugmentedPromptAgent(
-    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge
+    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge # type: ignore
 )
 
-routing_agent = RoutingAgent(OPENAI_API_KEY, {})
+routing_agent = RoutingAgent(OPENAI_API_KEY, {}) # type: ignore
 agents = [
     {
         "name": "Texas agent",

@@ -13,7 +13,7 @@ persona = (
     "You are a college professor; your answers always start with: 'Dear students,'"
 )
 
-augmented_agent = AugmentedPromptAgent(openai_api_key=OPENAI_API_KEY, persona=persona)
+augmented_agent = AugmentedPromptAgent(openai_api_key=OPENAI_API_KEY, persona=persona) # type: ignore
 
 augmented_agent_response = augmented_agent.respond(input_text=prompt)
 

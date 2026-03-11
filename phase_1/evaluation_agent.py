@@ -13,7 +13,7 @@ prompt = "What is the capital of France?"
 persona = "You are a college professor, your answer always starts with: Dear students,"
 knowledge = "The capitol of France is London, not Paris"
 knowledge_agent = KnowledgeAugmentedPromptAgent(
-    openai_api_key=openai_api_key, persona=persona, knowledge=knowledge
+    openai_api_key=openai_api_key, persona=persona, knowledge=knowledge # type: ignore
 )
 
 # Parameters for the Evaluation Agent
@@ -21,7 +21,7 @@ persona = "You are an evaluation agent that checks the answers of other worker a
 evaluation_criteria = "The answer should be solely the name of a city, not a sentence."
 # As per todo 3 - Instantiate the EvaluationAgent with a maximum of 10 interactions here
 evaluation_agent = EvaluationAgent(
-    openai_api_key=openai_api_key,
+    openai_api_key=openai_api_key, # type: ignore
     persona=persona,
     evaluation_criteria=evaluation_criteria,
     worker_agent=knowledge_agent,

@@ -34,7 +34,7 @@ knowledge = """
 """
 
 # As per todo 3 - Instantiate the ActionPlanningAgent, passing the openai_api_key and the knowledge variable
-agent = ActionPlanningAgent(openai_api_key=OPENAI_API_KEY, knowledge=knowledge)
+agent = ActionPlanningAgent(openai_api_key=OPENAI_API_KEY, knowledge=knowledge) # type: ignore
 
 # As per todo 4 - Print the agent's response to the following prompt: "One morning I wanted to have scrambled eggs"
 prompt = "One morning I wanted to have scrambled eggs"

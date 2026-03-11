@@ -16,4 +16,4 @@ You will find instructions for each of the two phases of the project in the READ
 
 ## License
 
-[License](../LICENSE.md)
+[License](LICENSE.md)
