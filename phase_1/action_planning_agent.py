@@ -1,9 +1,9 @@
-# TODO: 1 - Import all required libraries, including the ActionPlanningAgent
+# As per todo 1 - Import all required libraries, including the ActionPlanningAgent
 from workflow_agents.base_agents import ActionPlanningAgent
 import os
 
-# TODO: 2 - Load environment variables and define the openai_api_key variable with your OpenAI API key
-openai_api_key = os.getenv("OPENAI_API_KEY")
+# As per todo 2 - Load environment variables and define the openai_api_key variable with your OpenAI API key
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 knowledge = """
 # Fried Egg
@@ -33,21 +33,24 @@ knowledge = """
 7. Peel and serve
 """
 
-# TODO: 3 - Instantiate the ActionPlanningAgent, passing the openai_api_key and the knowledge variable
-agent = ActionPlanningAgent(openai_api_key=openai_api_key, knowledge=knowledge)
+# As per todo 3 - Instantiate the ActionPlanningAgent, passing the openai_api_key and the knowledge variable
+agent = ActionPlanningAgent(openai_api_key=OPENAI_API_KEY, knowledge=knowledge)
 
-# TODO: 4 - Print the agent's response to the following prompt: "One morning I wanted to have scrambled eggs"
+# As per todo 4 - Print the agent's response to the following prompt: "One morning I wanted to have scrambled eggs"
 prompt = "One morning I wanted to have scrambled eggs"
 print(f"Prompt: {prompt}")
 
-response = agent.extract_steps_from_prompt(prompt)
+action_planning_response = agent.extract_steps_from_prompt(prompt)
 
 # Print the agent's response
 print("Agent's response to the prompt:")
-print("\n".join(response))
+print("\n".join(action_planning_response))
 
-with open("test_output/action_planning_agent_resonse.txt", "w") as file:
+# Creates the test_output directory if it does not exist
+os.makedirs("test_output", exist_ok=True)
+
+with open("test_output/action_planning_agent_response.txt", "w") as file:
     file.write(f"Prompt: \n{prompt}\n")
     file.write("\n")
-    file.write(f"Response: \n")
-    file.write("\n".join(response) + "\n")
+    file.write("Response: \n")
+    file.write("\n".join(action_planning_response) + "\n")

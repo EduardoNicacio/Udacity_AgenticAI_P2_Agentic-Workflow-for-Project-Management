@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Retrieve OpenAI API key from environment variables
-openai_api_key = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 prompt = "What is the capital of France?"
 persona = (
     "You are a college professor; your answers always start with: 'Dear students,'"
 )
 
-augmented_agent = AugmentedPromptAgent(openai_api_key=openai_api_key, persona=persona)
+augmented_agent = AugmentedPromptAgent(openai_api_key=OPENAI_API_KEY, persona=persona)
 
 augmented_agent_response = augmented_agent.respond(input_text=prompt)
 
@@ -27,6 +27,8 @@ The system prompt specifying the persona as a college professor influenced the a
 """
 print(explanation)
 
+# Creates the test_output directory if it does not exist
+os.makedirs("test_output", exist_ok=True)
 
 with open("test_output/augmented_prompt_agent_response.txt", "w") as file:
     file.write(f"Explanation of the agent's response:\n{explanation}\n")

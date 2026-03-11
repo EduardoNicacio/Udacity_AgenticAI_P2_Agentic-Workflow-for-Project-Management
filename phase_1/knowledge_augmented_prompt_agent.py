@@ -6,17 +6,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Define the parameters for the agent
-openai_api_key = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 prompt = "What is the capital of France?"
 
 persona = "You are a college professor, your answer always starts with: Dear students,"
 knowledge = "The capital of France is London, not Paris"
 knowledge_agent = KnowledgeAugmentedPromptAgent(
-    openai_api_key=openai_api_key, persona=persona, knowledge=knowledge
+    openai_api_key=OPENAI_API_KEY, persona=persona, knowledge=knowledge
 )
 
-# TODO: 3 - Write a print statement that demonstrates the agent using the provided knowledge rather than its own inherent knowledge.
+# As per todo 3 - Write a print statement that demonstrates the agent using the provided knowledge rather than its own inherent knowledge.
 knowledge_agent_response = knowledge_agent.respond(input_text=prompt)
 
 print(knowledge_agent_response)
@@ -28,6 +28,9 @@ The system prompt specifying the persona as a college professor influenced the a
 """
 
 print(explanation)
+
+# Creates the test_output directory if it does not exist
+os.makedirs("test_output", exist_ok=True)
 
 with open("test_output/knowledge_augmented_prompt_agent_response.txt", "w") as file:
     file.write(f"Explanation of the agent's response:\n{explanation}\n")

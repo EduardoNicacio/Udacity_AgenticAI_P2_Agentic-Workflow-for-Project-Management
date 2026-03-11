@@ -1,4 +1,4 @@
-# TODO: 1 - Import EvaluationAgent and KnowledgeAugmentedPromptAgent classes#
+# As per todo 1 - Import EvaluationAgent and KnowledgeAugmentedPromptAgent classes#
 from workflow_agents.base_agents import KnowledgeAugmentedPromptAgent, EvaluationAgent
 import os
 from dotenv import load_dotenv
@@ -19,7 +19,7 @@ knowledge_agent = KnowledgeAugmentedPromptAgent(
 # Parameters for the Evaluation Agent
 persona = "You are an evaluation agent that checks the answers of other worker agents"
 evaluation_criteria = "The answer should be solely the name of a city, not a sentence."
-# TODO: 3 - Instantiate the EvaluationAgent with a maximum of 10 interactions here
+# As per todo 3 - Instantiate the EvaluationAgent with a maximum of 10 interactions here
 evaluation_agent = EvaluationAgent(
     openai_api_key=openai_api_key,
     persona=persona,
@@ -28,7 +28,7 @@ evaluation_agent = EvaluationAgent(
     max_interactions=10,
 )
 
-# TODO: 4 - Evaluate the prompt and print the response from the EvaluationAgent
+# As per todo 4 - Evaluate the prompt and print the response from the EvaluationAgent
 response = evaluation_agent.evaluate(prompt)
 print(response)  # This will print the evaluation of the knowledge agent's response
 
@@ -40,6 +40,9 @@ The Evaluation Agent's response will indicate whether the Knowledge Agent's answ
 """
 
 print(explanation)
+
+# Creates the test_output directory if it does not exist
+os.makedirs("test_output", exist_ok=True)
 
 with open("test_output/evaluation_agent_response.txt", "w") as file:
     file.write(f"Explanation of the evaluation agent's response:\n{explanation}\n")

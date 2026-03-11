@@ -9,7 +9,7 @@ In this phase, you will develop both the agent library and supporting scripts th
 **By the end of this phase, you will have:**
 
 * Implemented seven agent classes in a single `base_agents.py` file, each demonstrating a unique agent workflow.
-* Verified each agent’s behavior with a standalone test script.
+* Verified each agent's behavior with a standalone test script.
 * Organized your code into a clean, importable package that can be extended in Phase 2.
 
 ---
@@ -23,13 +23,14 @@ phase_1/
 ├── workflow_agents/
 │   ├── __init__.py             ← (empty)
 │   └── base_agents.py          ← Student implementation file
-├── direct_prompt_agent.py
+├── action_planning_agent.py
 ├── augmented_prompt_agent.py
+├── direct_prompt_agent.py
+├── evaluation_agent.py
 ├── knowledge_augmented_prompt_agent.py
 ├── rag_knowledge_prompt_agent.py
-├── evaluation_agent.py
-├── routing_agent.py
-└── action_planning_agent.py
+├── README.md - this document
+└── routing_agent.py
 ```
 
 * `workflow_agents` is a Python package containing all your agent class definitions.
