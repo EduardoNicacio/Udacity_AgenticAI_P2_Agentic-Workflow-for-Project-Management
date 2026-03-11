@@ -18,7 +18,7 @@ In this phase, you will develop both the agent library and supporting scripts th
 
 You will see files inside the `phase_1` folder arranged as follows:
 
-```
+```txt
 phase_1/
 ├── workflow_agents/
 │   ├── __init__.py             ← (empty)
@@ -37,7 +37,7 @@ phase_1/
 
 **Environment Configuration:** Create a `.env` file in the `tests/` folder containing your OpenAI API key:
 
-```
+```sh
 OPENAI_API_KEY=your_openai_api_key
 ```
 
@@ -59,11 +59,11 @@ A **Direct Prompt Agent** offers the most straightforward method for interacting
 
 Complete the following tasks to implement your `DirectPromptAgent` class:
 
-1.  **Import the `OpenAI` Class:** Import the `OpenAI` class from the OpenAI Python library.
-2.  **Store the API Key:** Within the class constructor (`__init__`), create an attribute named `openai_api_key` to store the provided OpenAI API key.
-3.  **Select the LLM Model:** When calling the OpenAI API, select the `gpt-3.5-turbo` model for generating completions.
-4.  **Send the User Prompt:** Pass the user-provided prompt directly to the model as a user message. Do not include a system prompt.
-5.  **Implement the `respond` method:** Return only the content (text) of the LLM's response, not the full JSON payload.
+1. **Import the `OpenAI` Class:** Import the `OpenAI` class from the OpenAI Python library.
+2. **Store the API Key:** Within the class constructor (`__init__`), create an attribute named `openai_api_key` to store the provided OpenAI API key.
+3. **Select the LLM Model:** When calling the OpenAI API, select the `gpt-3.5-turbo` model for generating completions.
+4. **Send the User Prompt:** Pass the user-provided prompt directly to the model as a user message. Do not include a system prompt.
+5. **Implement the `respond` method:** Return only the content (text) of the LLM's response, not the full JSON payload.
 
 ---
 
@@ -73,14 +73,16 @@ Complete the following tasks to implement your `DirectPromptAgent` class:
 
 Complete these steps in your test script to verify the functionality of the `DirectPromptAgent`:
 
-1.  **Import the Class:** Import the `DirectPromptAgent` class from `base_agents.py`.
-2.  **Load the API Key:** Use the `dotenv` library to securely load your OpenAI API key from an environment file.
-3.  **Instantiate the Agent:** Create an instance of the `DirectPromptAgent` class named `direct_agent` using the loaded API key.
-4.  **Prompt the Agent:** Send the following prompt to the agent, store the response, and print it:
-    ```
-    "What is the Capital of France?"
-    ```
-5.  **Explain Knowledge Source:** Include a descriptive print statement explaining source of the knowledge the agent used to respond to your prompt (Hint: the agent uses general knowledge from the selected LLM model).
+1. **Import the Class:** Import the `DirectPromptAgent` class from `base_agents.py`.
+2. **Load the API Key:** Use the `dotenv` library to securely load your OpenAI API key from an environment file.
+3. **Instantiate the Agent:** Create an instance of the `DirectPromptAgent` class named `direct_agent` using the loaded API key.
+4. **Prompt the Agent:** Send the following prompt to the agent, store the response, and print it:
+
+  ```txt
+  "What is the Capital of France?"
+  ```
+
+5. **Explain Knowledge Source:** Include a descriptive print statement explaining source of the knowledge the agent used to respond to your prompt (Hint: the agent uses general knowledge from the selected LLM model).
 
 ---
 
@@ -96,10 +98,10 @@ An **Augmented Prompt Agent** is a specialized agent designed to respond accordi
 
 Complete the following steps to implement your `AugmentedPromptAgent` class:
 
-1.  **Create Persona Attribute:** Create an attribute within the class to store the agent's persona.
-2.  **Call OpenAI API:** Declare a variable (e.g., `response`) to store the result of calling OpenAI's API for chat completions.
-3.  **Include System Prompt:** Construct a system prompt that instructs the agent to assume the defined persona. Ensure the agent is explicitly told to forget any previous conversational context.
-4.  **Return Textual Content:** In the `respond` method, return only the textual content of the response from the API, not the full JSON response.
+1. **Create Persona Attribute:** Create an attribute within the class to store the agent's persona.
+2. **Call OpenAI API:** Declare a variable (e.g., `response`) to store the result of calling OpenAI's API for chat completions.
+3. **Include System Prompt:** Construct a system prompt that instructs the agent to assume the defined persona. Ensure the agent is explicitly told to forget any previous conversational context.
+4. **Return Textual Content:** In the `respond` method, return only the textual content of the response from the API, not the full JSON response.
 
 ---
 
@@ -109,11 +111,11 @@ Complete the following steps to implement your `AugmentedPromptAgent` class:
 
 Complete the following tasks in your test script to test the `AugmentedPromptAgent`:
 
-1.  **Import the Class:** Import the `AugmentedPromptAgent` class from `base_agents.py`.
-2.  **Instantiate the Agent:** Create an instance of the `AugmentedPromptAgent` class using your OpenAI API key and a defined persona.
-3.  **Send a Prompt:** Send a prompt to the agent and store the result in a variable named `augmented_agent_response`.
-4.  **Print the Response:** Clearly print the `augmented_agent_response` to verify the agent’s behavior.
-5.  **Provide Explanatory Comments:** Include comments discussing:
+1. **Import the Class:** Import the `AugmentedPromptAgent` class from `base_agents.py`.
+2. **Instantiate the Agent:** Create an instance of the `AugmentedPromptAgent` class using your OpenAI API key and a defined persona.
+3. **Send a Prompt:** Send a prompt to the agent and store the result in a variable named `augmented_agent_response`.
+4. **Print the Response:** Clearly print the `augmented_agent_response` to verify the agent’s behavior.
+5. **Provide Explanatory Comments:** Include comments discussing:
     * The type of knowledge the agent likely used to generate its response.
     * How specifying the agent’s persona affected the final output.
 
@@ -131,24 +133,30 @@ The **Knowledge Augmented Prompt Agent** is designed to incorporate specific, pr
 
 Complete the following steps to build this agent class:
 
-1.  **Create Persona Attribute:** Create an attribute for storing the agent’s persona.
-2.  **Create Knowledge Attribute:** Create an attribute for storing the agent’s specific knowledge.
-3.  **Implement the `respond` method:** Within this method:
+1. **Create Persona Attribute:** Create an attribute for storing the agent’s persona.
+2. **Create Knowledge Attribute:** Create an attribute for storing the agent’s specific knowledge.
+3. **Implement the `respond` method:** Within this method:
     * Construct a **system message** that clearly defines the persona with the instruction:
-        ```
+
+        ```txt
         You are _persona_ knowledge-based assistant. Forget all previous context.
         ```
+
         (Replace `_persona_` with the actual persona variable/attribute).
     * Clearly specify the provided knowledge in the system message:
-        ```
+
+        ```txt
         Use only the following knowledge to answer, do not use your own knowledge: _knowledge_
         ```
+
         (Replace `_knowledge_` with the actual knowledge variable/attribute).
     * Include a final instruction in the system message:
-        ```
+
+        ```txt
         Answer the prompt based on this knowledge, not your own.
         ```
-4.  **Append User Prompt:** Append the user's input prompt as a separate message in the API request.
+
+4. **Append User Prompt:** Append the user's input prompt as a separate message in the API request.
 
 ---
 
@@ -158,22 +166,28 @@ Complete the following steps to build this agent class:
 
 Complete the following steps in your test script to instantiate and test the `KnowledgeAugmentedPromptAgent`:
 
-1.  **Import the Class:** Import the `KnowledgeAugmentedPromptAgent` class from `base_agents.py`.
-2.  **Load the API Key:** Load your OpenAI API key from your `.env` file.
-3.  **Instantiate the Agent:** Create an instance of the agent with the following parameters:
+1. **Import the Class:** Import the `KnowledgeAugmentedPromptAgent` class from `base_agents.py`.
+2. **Load the API Key:** Load your OpenAI API key from your `.env` file.
+3. **Instantiate the Agent:** Create an instance of the agent with the following parameters:
     * **Persona:**
-        ```
+
+        ```txt
         "You are a college professor, your answer always starts with: Dear students,"
         ```
+
     * **Knowledge:**
-        ```
+
+        ```txt
         "The capital of France is London, not Paris"
         ```
-4.  **Test the Agent:** Use the following prompt:
-    ```
+
+4. **Test the Agent:** Use the following prompt:
+
+    ```txt
     "What is the capital of France?"
     ```
-5.  **Confirm Knowledge Usage:** Add a print statement to confirm the agent’s response explicitly uses the provided knowledge rather than its inherent knowledge from the LLM.
+
+5. **Confirm Knowledge Usage:** Add a print statement to confirm the agent’s response explicitly uses the provided knowledge rather than its inherent knowledge from the LLM.
 
 ---
 
@@ -195,13 +209,13 @@ The **Evaluation Agent** is designed to assess responses from another agent (a "
 
 Complete the following tasks to implement the `EvaluationAgent` class:
 
-1.  **Declare Class Attributes:** Define all necessary class attributes for the `EvaluationAgent`, including one for `max_interactions`.
-2.  **Implement Interaction Loop:** Create a loop that is limited by the `max_interactions` attribute.
-3.  **Retrieve Worker Response:** Within the loop, retrieve a response from the worker agent.
-4.  **Construct Evaluation Prompt:** Formulate an evaluation prompt that incorporates the predefined evaluation criteria.
-5.  **Define Evaluation Message Structure:** Define the message structure to evaluate responses using the OpenAI API. Set `temperature=0` for this call.
-6.  **Define Correction Instruction Message Structure:** Define the message structure to generate instructions for correcting responses, also using the OpenAI API with `temperature=0`.
-7.  **Return Results:** Ensure the `respond` method (or equivalent) returns a dictionary containing the final response from the worker agent, the evaluation result, and the count of iterations performed.
+1. **Declare Class Attributes:** Define all necessary class attributes for the `EvaluationAgent`, including one for `max_interactions`.
+2. **Implement Interaction Loop:** Create a loop that is limited by the `max_interactions` attribute.
+3. **Retrieve Worker Response:** Within the loop, retrieve a response from the worker agent.
+4. **Construct Evaluation Prompt:** Formulate an evaluation prompt that incorporates the predefined evaluation criteria.
+5. **Define Evaluation Message Structure:** Define the message structure to evaluate responses using the OpenAI API. Set `temperature=0` for this call.
+6. **Define Correction Instruction Message Structure:** Define the message structure to generate instructions for correcting responses, also using the OpenAI API with `temperature=0`.
+7. **Return Results:** Ensure the `respond` method (or equivalent) returns a dictionary containing the final response from the worker agent, the evaluation result, and the count of iterations performed.
 
 ---
 
@@ -211,18 +225,22 @@ Complete the following tasks to implement the `EvaluationAgent` class:
 
 Complete the following steps in your test script to instantiate and test the `EvaluationAgent`:
 
-1.  **Import Classes:** Import the `EvaluationAgent` and `KnowledgeAugmentedPromptAgent` from `base_agents.py`.
-2.  **Instantiate Worker Agent:** Create an instance of `KnowledgeAugmentedPromptAgent` with:
+1. **Import Classes:** Import the `EvaluationAgent` and `KnowledgeAugmentedPromptAgent` from `base_agents.py`.
+2. **Instantiate Worker Agent:** Create an instance of `KnowledgeAugmentedPromptAgent` with:
     * **Persona:**
-        ```
+
+        ```txt
         "You are a college professor, your answer always starts with: Dear students,"
         ```
+
     * **Knowledge:**
-        ```
+
+        ```txt
         "The capitol of France is London, not Paris"
         ```
-3.  **Instantiate Evaluation Agent:** Create an instance of the `EvaluationAgent` with a maximum of `10` interactions.
-4.  **Evaluate Prompt and Print:** Evaluate the prompt `"What is the capital of France?"` using the `EvaluationAgent` and print the resulting evaluation.
+
+3. **Instantiate Evaluation Agent:** Create an instance of the `EvaluationAgent` with a maximum of `10` interactions.
+4. **Evaluate Prompt and Print:** Evaluate the prompt `"What is the capital of France?"` using the `EvaluationAgent` and print the resulting evaluation.
 
 ---
 
@@ -238,15 +256,15 @@ The **Routing Agent** is capable of directing user prompts to the most appropria
 
 Complete the following tasks to implement the `RoutingAgent` class:
 
-1.  **Define `agents` Attribute:** Within the class constructor (`__init__`), define an attribute named `agents` to store agent details (e.g., descriptions and their callable functions/methods).
-2.  **Implement `get_embedding` Method:** Implement a method to calculate text embeddings using the `text-embedding-3-large` model from OpenAI.
-3.  **Create Routing Method:** Create a new method to route user prompts. This method should:
+1. **Define `agents` Attribute:** Within the class constructor (`__init__`), define an attribute named `agents` to store agent details (e.g., descriptions and their callable functions/methods).
+2. **Implement `get_embedding` Method:** Implement a method to calculate text embeddings using the `text-embedding-3-large` model from OpenAI.
+3. **Create Routing Method:** Create a new method to route user prompts. This method should:
     * Compute the embedding for the user input prompt.
     * Iterate over each agent stored in the `agents` attribute:
         * Compute the embedding for each agent's description.
         * Calculate the cosine similarity between the user prompt embedding and the agent description embedding.
         * Select the agent that has the highest similarity score.
-4.  **Return Selected Agent's Response:** The routing method should return the response obtained by calling the selected agent.
+4. **Return Selected Agent's Response:** The routing method should return the response obtained by calling the selected agent.
 
 ---
 
@@ -256,13 +274,13 @@ Complete the following tasks to implement the `RoutingAgent` class:
 
 Complete the following steps in your test script to instantiate and test the `RoutingAgent`:
 
-1.  **Import Classes:** Import `KnowledgeAugmentedPromptAgent` and `RoutingAgent` from `base_agents.py`.
-2.  **Instantiate Texas Agent:** Create an instance of `KnowledgeAugmentedPromptAgent` for Texas-related knowledge.
-3.  **Instantiate Europe Agent:** Create another instance of `KnowledgeAugmentedPromptAgent` for Europe-related knowledge.
-4.  **Instantiate Math Agent:** Create a third `KnowledgeAugmentedPromptAgent` specifically for math-related prompts.
-5.  **Define Agent Functions/Lambdas:** For each agent, define a function or lambda expression that will be called if that agent is selected. These functions will embody the agent's task (e.g., answering Texas-related questions).
-6.  **Assign Agents to Router:** Assign these agents (along with their descriptions and callable functions/lambdas) to the `agents` attribute of the `RoutingAgent` instance.
-7.  **Test Routing with Prompts:** Test your routing agent with the following prompts and print the results:
+1. **Import Classes:** Import `KnowledgeAugmentedPromptAgent` and `RoutingAgent` from `base_agents.py`.
+2. **Instantiate Texas Agent:** Create an instance of `KnowledgeAugmentedPromptAgent` for Texas-related knowledge.
+3. **Instantiate Europe Agent:** Create another instance of `KnowledgeAugmentedPromptAgent` for Europe-related knowledge.
+4. **Instantiate Math Agent:** Create a third `KnowledgeAugmentedPromptAgent` specifically for math-related prompts.
+5. **Define Agent Functions/Lambdas:** For each agent, define a function or lambda expression that will be called if that agent is selected. These functions will embody the agent's task (e.g., answering Texas-related questions).
+6. **Assign Agents to Router:** Assign these agents (along with their descriptions and callable functions/lambdas) to the `agents` attribute of the `RoutingAgent` instance.
+7. **Test Routing with Prompts:** Test your routing agent with the following prompts and print the results:
     * `"Tell me about the history of Rome, Texas"`
     * `"Tell me about the history of Rome, Italy"`
     * `"One story takes 2 days, and there are 20 stories"`
@@ -281,14 +299,14 @@ The **Action Planning Agent** is crucial for constructing agentic workflows. Thi
 
 Complete the following tasks to implement the `ActionPlanningAgent` class:
 
-1.  **Initialize Agent Attributes:** In the constructor (`__init__`), initialize attributes for the OpenAI API key and the agent's knowledge.
-2.  **Instantiate OpenAI Client:** Instantiate the OpenAI client object.
-3.  **Implement `respond` method (or similar logic):**
+1. **Initialize Agent Attributes:** In the constructor (`__init__`), initialize attributes for the OpenAI API key and the agent's knowledge.
+2. **Instantiate OpenAI Client:** Instantiate the OpenAI client object.
+3. **Implement `respond` method (or similar logic):**
     * Send a request to OpenAI's `gpt-3.5-turbo` model using:
         * A **system prompt** defining the agent as an "Action Planning Agent" that extracts steps using provided knowledge.
         * The **user's input prompt**.
     * Extract and store the text response from the OpenAI API.
-4.  **Process Response:** Process the response text to clearly extract individual action steps, removing any empty or irrelevant lines to produce a clean list of actions.
+4. **Process Response:** Process the response text to clearly extract individual action steps, removing any empty or irrelevant lines to produce a clean list of actions.
 
 ---
 
@@ -298,11 +316,12 @@ Complete the following tasks to implement the `ActionPlanningAgent` class:
 
 Complete the following steps in your test script to test the `ActionPlanningAgent`:
 
-1.  **Import Libraries and Class:** Import necessary libraries (e.g., `dotenv`) and the `ActionPlanningAgent` class from `base_agents.py`.
-2.  **Load API Key:** Load environment variables and assign your OpenAI API key to a variable, for example, `openai_api_key`.
-3.  **Instantiate the Agent:** Create an instance of the `ActionPlanningAgent`, providing it with the defined knowledge (if any is specifically required for its action planning task beyond general instruction) and the API key.
-4.  **Verify Functionality:** Test the agent by sending it the following prompt and printing the extracted action steps:
-    ```
+1. **Import Libraries and Class:** Import necessary libraries (e.g., `dotenv`) and the `ActionPlanningAgent` class from `base_agents.py`.
+2. **Load API Key:** Load environment variables and assign your OpenAI API key to a variable, for example, `openai_api_key`.
+3. **Instantiate the Agent:** Create an instance of the `ActionPlanningAgent`, providing it with the defined knowledge (if any is specifically required for its action planning task beyond general instruction) and the API key.
+4. **Verify Functionality:** Test the agent by sending it the following prompt and printing the extracted action steps:
+
+    ```txt
     "One morning I wanted to have scrambled eggs"
     ```
 

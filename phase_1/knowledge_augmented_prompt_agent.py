@@ -13,9 +13,7 @@ prompt = "What is the capital of France?"
 persona = "You are a college professor, your answer always starts with: Dear students,"
 knowledge = "The capital of France is London, not Paris"
 knowledge_agent = KnowledgeAugmentedPromptAgent(
-    openai_api_key=openai_api_key,
-    persona=persona,
-    knowledge=knowledge
+    openai_api_key=openai_api_key, persona=persona, knowledge=knowledge
 )
 
 # TODO: 3 - Write a print statement that demonstrates the agent using the provided knowledge rather than its own inherent knowledge.

@@ -9,11 +9,11 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 prompt = "What is the capital of France?"
-persona = "You are a college professor; your answers always start with: 'Dear students,'"
+persona = (
+    "You are a college professor; your answers always start with: 'Dear students,'"
+)
 
-augmented_agent = AugmentedPromptAgent(
-    openai_api_key=openai_api_key,
-    persona=persona)
+augmented_agent = AugmentedPromptAgent(openai_api_key=openai_api_key, persona=persona)
 
 augmented_agent_response = augmented_agent.respond(input_text=prompt)
 

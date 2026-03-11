@@ -42,12 +42,18 @@ To Clara, knowledge was a living system—retrieved from the past, generated in 
 Her life and work were testaments to the power of connecting across disciplines, borders, and generations—exactly the kind of story that RAG models were born to find.
 """
 
-chunks = RAG_knowledge_prompt_agent.chunk_text(knowledge_text)  # TODO: 3 - Compute the knowledge_text the chunks
-embbedings = RAG_knowledge_prompt_agent.calculate_embeddings() # TODO: 4 - Compute the knowledge_text the chunk embbedings
+chunks = RAG_knowledge_prompt_agent.chunk_text(
+    knowledge_text
+)  # TODO: 3 - Compute the knowledge_text the chunks
+embbedings = (
+    RAG_knowledge_prompt_agent.calculate_embeddings()
+)  # TODO: 4 - Compute the knowledge_text the chunk embbedings
 
 prompt = "What is the podcast that Clara hosts about?"
 # TODO: 5 - Print the prompt and the response
-response = RAG_knowledge_prompt_agent.find_prompt_in_knowledge(prompt)  # TODO: 6 - Compute the response using the prompt, chunks, and embbedings
+response = RAG_knowledge_prompt_agent.find_prompt_in_knowledge(
+    prompt
+)  # TODO: 6 - Compute the response using the prompt, chunks, and embbedings
 
 print(f"Prompt: {prompt}")
 print(f"Response: {response}")

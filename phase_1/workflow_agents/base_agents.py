@@ -7,6 +7,7 @@ import uuid
 from datetime import datetime
 from openai import OpenAI
 
+
 # DirectPromptAgent class definition
 class DirectPromptAgent:
 
@@ -16,16 +17,16 @@ class DirectPromptAgent:
 
     def respond(self, prompt):
         # Generate a response using the OpenAI API
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
         response = client.chat.completions.create(
-            model='gpt-3.5-turbo',
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0,
         )
         # Return only the textual content of the response (not really a safe practice, but for simplicity)
-        return response.choices[0].message.content.strip()
+        return response.choices[0].message.content.strip()  # type: ignore
 
 
 # AugmentedPromptAgent class definition
@@ -37,18 +38,23 @@ class AugmentedPromptAgent:
 
     def respond(self, input_text):
         """Generate a response using OpenAI API."""
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
 
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": f"Forget all previous context. {self.persona}"},
-                {"role": "user", "content": input_text}
+                {
+                    "role": "system",
+                    "content": f"Forget all previous context. {self.persona}",
+                },
+                {"role": "user", "content": input_text},
             ],
-            temperature=0
+            temperature=0,
         )
         # Return only the textual content of the response (not really a safe practice, but for simplicity)
-        return response.choices[0].message.content.strip()
+        return response.choices[0].message.content.strip()  # type: ignore
 
 
 # KnowledgeAugmentedPromptAgent class definition
@@ -62,16 +68,27 @@ class KnowledgeAugmentedPromptAgent:
 
     def respond(self, input_text):
         """Generate a response using the OpenAI API."""
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": f"{self.persona}. Forget all previous context."},
-                {"role": "system", "content": f"Use only the following knowledge to answer, do not use your own knowledge: {self.knowledge}"},
-                {"role": "system", "content": f"Answer the prompt based on this knowledge, not your own."},
-                {"role": "user", "content": input_text}
+                {
+                    "role": "system",
+                    "content": f"{self.persona}. Forget all previous context.",
+                },
+                {
+                    "role": "system",
+                    "content": f"Use only the following knowledge to answer, do not use your own knowledge: {self.knowledge}",
+                },
+                {
+                    "role": "system",
+                    "content": "Answer the prompt based on this knowledge, not your own.",
+                },
+                {"role": "user", "content": input_text},
             ],
-            temperature=0
+            temperature=0,
         )
         return response.choices[0].message.content
 
@@ -97,7 +114,9 @@ class RAGKnowledgePromptAgent:
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.openai_api_key = openai_api_key
-        self.unique_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}.csv"
+        self.unique_filename = (
+            f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}.csv"
+        )
 
     def get_embedding(self, text):
         """
@@ -109,11 +128,11 @@ class RAGKnowledgePromptAgent:
         Returns:
         list: The embedding vector.
         """
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
         response = client.embeddings.create(
-            model="text-embedding-3-large",
-            input=text,
-            encoding_format="float"
+            model="text-embedding-3-large", input=text, encoding_format="float"
         )
         return response.data[0].embedding
 
@@ -142,7 +161,7 @@ class RAGKnowledgePromptAgent:
         list: List of dictionaries containing chunk metadata.
         """
         separator = "\n"
-        text = re.sub(r'\s+', ' ', text).strip()
+        text = re.sub(r"\s+", " ", text).strip()
 
         if len(text) <= self.chunk_size:
             return [{"chunk_id": 0, "text": text, "chunk_size": len(text)}]
@@ -154,18 +173,22 @@ class RAGKnowledgePromptAgent:
             if separator in text[start:end]:
                 end = start + text[start:end].rindex(separator) + len(separator)
 
-            chunks.append({
-                "chunk_id": chunk_id,
-                "text": text[start:end],
-                "chunk_size": end - start,
-                "start_char": start,
-                "end_char": end
-            })
+            chunks.append(
+                {
+                    "chunk_id": chunk_id,
+                    "text": text[start:end],
+                    "chunk_size": end - start,
+                    "start_char": start,
+                    "end_char": end,
+                }
+            )
 
             start = end - self.chunk_overlap
             chunk_id += 1
 
-        with open(f"chunks-{self.unique_filename}", 'w', newline='', encoding='utf-8') as csvfile:
+        with open(
+            f"chunks-{self.unique_filename}", "w", newline="", encoding="utf-8"
+        ) as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["text", "chunk_size"])
             writer.writeheader()
             for chunk in chunks:
@@ -180,9 +203,9 @@ class RAGKnowledgePromptAgent:
         Returns:
         DataFrame: DataFrame containing text chunks and their embeddings.
         """
-        df = pd.read_csv(f"chunks-{self.unique_filename}", encoding='utf-8')
-        df['embeddings'] = df['text'].apply(self.get_embedding)
-        df.to_csv(f"embeddings-{self.unique_filename}", encoding='utf-8', index=False)
+        df = pd.read_csv(f"chunks-{self.unique_filename}", encoding="utf-8")
+        df["embeddings"] = df["text"].apply(self.get_embedding)
+        df.to_csv(f"embeddings-{self.unique_filename}", encoding="utf-8", index=False)
         return df
 
     def find_prompt_in_knowledge(self, prompt):
@@ -196,20 +219,30 @@ class RAGKnowledgePromptAgent:
         str: Response derived from the most similar chunk in knowledge.
         """
         prompt_embedding = self.get_embedding(prompt)
-        df = pd.read_csv(f"embeddings-{self.unique_filename}", encoding='utf-8')
-        df['embeddings'] = df['embeddings'].apply(lambda x: np.array(eval(x)))
-        df['similarity'] = df['embeddings'].apply(lambda emb: self.calculate_similarity(prompt_embedding, emb))
+        df = pd.read_csv(f"embeddings-{self.unique_filename}", encoding="utf-8")
+        df["embeddings"] = df["embeddings"].apply(lambda x: np.array(eval(x)))  # type: ignore
+        df["similarity"] = df["embeddings"].apply(
+            lambda emb: self.calculate_similarity(prompt_embedding, emb)
+        )
 
-        best_chunk = df.loc[df['similarity'].idxmax(), 'text']
+        best_chunk = df.loc[df["similarity"].idxmax(), "text"]
 
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": f"You are {self.persona}, a knowledge-based assistant. Forget previous context."},
-                {"role": "user", "content": f"Answer based only on this information: {best_chunk}. Prompt: {prompt}"}
+                {
+                    "role": "system",
+                    "content": f"You are {self.persona}, a knowledge-based assistant. Forget previous context.",
+                },
+                {
+                    "role": "user",
+                    "content": f"Answer based only on this information: {best_chunk}. Prompt: {prompt}",
+                },
             ],
-            temperature=0
+            temperature=0,
         )
 
         return response.choices[0].message.content
@@ -217,7 +250,14 @@ class RAGKnowledgePromptAgent:
 
 class EvaluationAgent:
 
-    def __init__(self, openai_api_key, persona, evaluation_criteria, worker_agent, max_interactions):
+    def __init__(
+        self,
+        openai_api_key,
+        persona,
+        evaluation_criteria,
+        worker_agent,
+        max_interactions,
+    ):
         # Initialize the EvaluationAgent with given attributes.
         self.openai_api_key = openai_api_key
         self.persona = persona
@@ -227,15 +267,21 @@ class EvaluationAgent:
 
     def evaluate(self, initial_prompt):
         # This method manages interactions between agents to achieve a solution.
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
         prompt_to_evaluate = initial_prompt
 
-        for i in range(self.max_interactions): # TODO: 2 - Set loop to iterate up to the maximum number of interactions:
+        for i in range(
+            self.max_interactions
+        ):  # TODO: 2 - Set loop to iterate up to the maximum number of interactions:
             print(f"\n--- Interaction {i+1} ---")
 
             print(" Step 1: Worker agent generates a response to the prompt")
             print(f"Prompt:\n{prompt_to_evaluate}")
-            response_from_worker = self.worker_agent.respond(input_text=prompt_to_evaluate) # TODO: 3 - Obtain a response from the worker agent
+            response_from_worker = self.worker_agent.respond(
+                input_text=prompt_to_evaluate
+            )  # TODO: 3 - Obtain a response from the worker agent
             print(f"Worker Agent Response:\n{response_from_worker}")
 
             print(" Step 2: Evaluator agent judges the response")
@@ -246,11 +292,9 @@ class EvaluationAgent:
             )
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
-                 # TODO: 5 - Define the message structure sent to the LLM for evaluation (use temperature=0)
-                messages=[
-                    {"role": "user", "content": eval_prompt}
-                ],
-                temperature=0
+                # TODO: 5 - Define the message structure sent to the LLM for evaluation (use temperature=0)
+                messages=[{"role": "user", "content": eval_prompt}],
+                temperature=0,
             )
             evaluation = response.choices[0].message.content.strip()
             print(f"Evaluator Agent Evaluation:\n{evaluation}")
@@ -261,15 +305,12 @@ class EvaluationAgent:
                 break
             else:
                 print(" Step 4: Generate instructions to correct the response")
-                instruction_prompt = (
-                    f"Provide instructions to fix an answer based on these reasons why it is incorrect: {evaluation}"
-                )
+                instruction_prompt = f"Provide instructions to fix an answer based on these reasons why it is incorrect: {evaluation}"
+                # TODO: 6 - Define the message structure sent to the LLM to generate correction instructions (use temperature=0)
                 response = client.chat.completions.create(
                     model="gpt-3.5-turbo",
-                    # TODO: 6 - Define the message structure sent to the LLM to generate correction instructions (use temperature=0)
-                    messages=[
-                        {"role": "user", "content": instruction_prompt}
-                    ],
+                    temperature=0,
+                    messages=[{"role": "user", "content": instruction_prompt}],
                 )
                 instructions = response.choices[0].message.content.strip()
                 print(f"Instructions to fix:\n{instructions}")
@@ -283,13 +324,13 @@ class EvaluationAgent:
                 )
         return {
             # TODO: 7 - Return a dictionary containing the final response, evaluation, and number of iterations
-            "final_response": response_from_worker,
-            "evaluation": evaluation,
-            "iterations": i + 1
+            "final_response": response_from_worker,  # type: ignore
+            "evaluation": evaluation,  # type: ignore
+            "iterations": i + 1,  # type: ignore
         }
 
 
-class RoutingAgent():
+class RoutingAgent:
 
     def __init__(self, openai_api_key, agents):
         # Initialize the agent with given attributes
@@ -297,11 +338,11 @@ class RoutingAgent():
         self.agents = agents
 
     def get_embedding(self, text):
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
         response = client.embeddings.create(
-            model="text-embedding-3-large",
-            input=text,
-            encoding_format="float"
+            model="text-embedding-3-large", input=text, encoding_format="float"
         )
         # Extract and return the embedding vector from the response
         embedding = response.data[0].embedding
@@ -320,7 +361,9 @@ class RoutingAgent():
             if agent_emb is None:
                 continue
 
-            similarity = np.dot(input_emb, agent_emb) / (np.linalg.norm(input_emb) * np.linalg.norm(agent_emb))
+            similarity = np.dot(input_emb, agent_emb) / (
+                np.linalg.norm(input_emb) * np.linalg.norm(agent_emb)
+            )
             print(similarity)
 
             # TODO: 6 - Add logic to select the best agent based on the similarity score between the user prompt and the agent descriptions
@@ -345,7 +388,9 @@ class ActionPlanningAgent:
     def extract_steps_from_prompt(self, prompt):
 
         # TODO: 2 - Instantiate the OpenAI client using the provided API key
-        client = OpenAI(base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key)
+        client = OpenAI(
+            base_url="https://openai.vocareum.com/v1", api_key=self.openai_api_key
+        )
 
         # TODO: 3 - Call the OpenAI API to get a response from the "gpt-3.5-turbo" model.
         # Provide the following system prompt along with the user's prompt:
@@ -353,17 +398,21 @@ class ActionPlanningAgent:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": f"You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You return the steps as a list. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}"},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": f"You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You return the steps as a list. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}",
+                },
+                {"role": "user", "content": prompt},
             ],
-            temperature=0
+            temperature=0,
         )
 
-        response_text = response.choices[0].message.content # TODO: 4 - Extract the response text from the OpenAI API response
+        response_text = response.choices[
+            0
+        ].message.content  # TODO: 4 - Extract the response text from the OpenAI API response
 
         # TODO: 5 - Clean and format the extracted steps by removing empty lines and unwanted text
-        steps = response_text.split("\n")
+        steps = response_text.split("\n")  # type: ignore
         steps = [step.strip() for step in steps]
 
         return steps
-

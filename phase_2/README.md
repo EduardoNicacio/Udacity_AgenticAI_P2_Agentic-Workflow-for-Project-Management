@@ -1,5 +1,6 @@
 # Project Title: AI-Powered Agentic Workflow for Project Management
-# Phase 2: Implement an agentic workflow using a predefined agent library.
+
+## Phase 2: Implement an agentic workflow using a predefined agent library
 
 Congratulations on reaching Phase 2 of the project! In this phase, you'll use the agent classes from Phase 1 to implement an agentic workflow.
 
@@ -11,43 +12,44 @@ This is not about building a chatbot. You will develop an agentic system that pr
 
 ## Workflow Agents Library
 
-1.  Locate the `workflow_agents` folder. Ensure it contains the `base_agents.py` file with the code for all agent classes. Confirm you have completed testing these classes as required in Phase 1.
-2.  You will be working in the `agentic_workflow.py` file in the Phase 2 folder to construct the agentic workflow using the agents from the `workflow_agents.base_agents` module.
+1. Locate the `workflow_agents` folder. Ensure it contains the `base_agents.py` file with the code for all agent classes. Confirm you have completed testing these classes as required in Phase 1.
+2. You will be working in the `agentic_workflow.py` file in the Phase 2 folder to construct the agentic workflow using the agents from the `workflow_agents.base_agents` module.
 
 ## Workflow Script Implementation Steps
 
 Follow the `TODO` comments in the `agentic_workflow.py` starter code. Below are detailed instructions for each step:
 
-1.  **Import Agents (TODO 1):**
+1. **Import Agents (TODO 1):**
     Import `ActionPlanningAgent`, `KnowledgeAugmentedPromptAgent`, `EvaluationAgent`, and `RoutingAgent` from the `workflow_agents.base_agents` module.
 
-2.  **Load OpenAI API Key (TODO 2):**
+2. **Load OpenAI API Key (TODO 2):**
     Load your OpenAI API key from environment variables (e.g., using a `.env` file and the `python-dotenv` library) and store it in a variable named `openai_api_key`.
 
-3.  **Load Product Specification (TODO 3):**
+3. **Load Product Specification (TODO 3):**
     Load the content of the `Product-Spec-Email-Router.txt` document into a string variable named `product_spec`.
 
-4.  **Instantiate Action Planning Agent (TODO 4):**
+4. **Instantiate Action Planning Agent (TODO 4):**
     Instantiate the `ActionPlanningAgent`. The required `knowledge` string (`knowledge_action_planning`) is provided in the starter code.
 
-5.  **Complete Product Manager Knowledge (TODO 5):**
+5. **Complete Product Manager Knowledge (TODO 5):**
     The `knowledge_product_manager` string for the Product Manager agent is partially provided. Complete it by appending the `product_spec` content (loaded in TODO 3) to the end of the string. This allows the agent to have the product specification as part of its knowledge.
 
-6.  **Instantiate Product Manager Knowledge Agent (TODO 6):**
+6. **Instantiate Product Manager Knowledge Agent (TODO 6):**
     Instantiate the `KnowledgeAugmentedPromptAgent` for the Product Manager. Use the `persona_product_manager` and the completed `knowledge_product_manager` (from TODO 5) strings provided in the starter code.
 
-7.  **Instantiate Product Manager Evaluation Agent (TODO 7):**
+7. **Instantiate Product Manager Evaluation Agent (TODO 7):**
     Define the `persona` and `evaluation_criteria` for the Product Manager's Evaluation Agent, then instantiate it. This agent will assess the outputs of the `product_manager_knowledge_agent`.
     * **Persona:** `"You are an evaluation agent that checks the answers of other worker agents"`
     * **Evaluation Criteria:** `"The answer should be stories that follow the following structure: As a [type of user], I want [an action or feature] so that [benefit/value]."`
     Pass the `product_manager_knowledge_agent` as the `agent_to_evaluate` parameter during instantiation.
 
-8.  **Instantiate Program Manager Agents (Before and for TODO 8):**
+8. **Instantiate Program Manager Agents (Before and for TODO 8):**
     * First, instantiate the `KnowledgeAugmentedPromptAgent` for the Program Manager. The `persona_program_manager` and `knowledge_program_manager` strings are provided in the starter code. (A comment prompts this action before TODO 8).
     * **(TODO 8)** Then, instantiate the `EvaluationAgent` for the Program Manager.
         * Use the `persona_program_manager_eval` string provided in the starter code.
         * The `evaluation_criteria` are provided directly in the comment for TODO 8:
-            ```
+
+            ```txt
             "The answer should be product features that follow the following structure: " \
             "Feature Name: A clear, concise title that identifies the capability\n" \
             "Description: A brief explanation of what the feature does and its purpose\n" \
@@ -55,12 +57,13 @@ Follow the `TODO` comments in the `agentic_workflow.py` starter code. Below are 
             "User Benefit: How this feature creates value for the user"
             ```
 
-9.  **Instantiate Development Engineer Agents (Before and for TODO 9):**
+9. **Instantiate Development Engineer Agents (Before and for TODO 9):**
     * First, instantiate the `KnowledgeAugmentedPromptAgent` for the Development Engineer. The `persona_dev_engineer` and `knowledge_dev_engineer` strings are provided in the starter code. (A comment prompts this action before TODO 9).
     * **(TODO 9)** Then, instantiate the `EvaluationAgent` for the Development Engineer.
         * Use the `persona_dev_engineer_eval` string provided in the starter code.
         * The `evaluation_criteria` are provided directly in the comment for TODO 9:
-            ```
+
+            ```txt
             "The answer should be tasks following this exact structure: " \
             "Task ID: A unique identifier for tracking purposes\n" \
             "Task Title: Brief description of the specific development work\n" \
