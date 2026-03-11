@@ -48,7 +48,7 @@ logging.basicConfig(
     level=logging.INFO,  # INFO is sufficient; DEBUG can be enabled if needed
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("logs/agentic_workflow.log"),
+        logging.FileHandler("logs/phase_2.log"),
         logging.StreamHandler(),
     ],
 )
@@ -190,7 +190,7 @@ try:
         worker_agent=development_engineer_knowledge_agent,
         max_interactions=10,
     )
-except Exception as exc:
+except Exception as e:
     logger.exception("Failed to instantiate one or more agents.")
     sys.exit(1)
 
@@ -215,19 +215,20 @@ def product_manager_support_function(query: str) -> str:
     """
     print(f"Product Manager support function called with query: {query}")
     try:
-        response = product_manager_knowledge_agent.respond(input_text=query)
-        print(f"Knowledge agent response (PM): {response[:200]}...")  # type: ignore
-    except Exception as exc:
+        agent_response = product_manager_knowledge_agent.respond(input_text=query)
+        print(f"Knowledge agent response (PM): {agent_response}")  # type: ignore
+    except Exception as e:
         logger.exception("Error while generating user stories.")
         return f"[ERROR] Failed to generate user stories for query: {query}"
 
     try:
-        evaluation = product_manager_evaluation_agent.evaluate(response)
-        print(f"Evaluation result (PM): {evaluation[:200]}...")  # type: ignore
-    except Exception as exc:
+        model_evaluation = product_manager_evaluation_agent.evaluate(agent_response)
+        print(f"Evaluation result (PM): {model_evaluation.get("final_response", "")}")  # type: ignore
+    except Exception as e:
         logger.exception("Error while evaluating user stories.")
         return f"[ERROR] Failed to evaluate user stories for query: {query}"
-    return evaluation  # type: ignore
+    
+    return model_evaluation.get("final_response", "")
 
 
 def program_manager_support_function(query: str) -> str:
@@ -246,19 +247,20 @@ def program_manager_support_function(query: str) -> str:
     """
     print(f"Program Manager support function called with query: {query}")
     try:
-        response = program_manager_knowledge_agent.respond(input_text=query)
-        print(f"Knowledge agent response (ProgMgr): {response[:200]}...")  # type: ignore
-    except Exception as exc:
+        agent_response = program_manager_knowledge_agent.respond(input_text=query)
+        print(f"Knowledge agent response (ProgMgr): {agent_response}")  # type: ignore
+    except Exception as e:
         logger.exception("Error while generating features.")
         return f"[ERROR] Failed to generate features for query: {query}"
 
     try:
-        evaluation = program_manager_evaluation_agent.evaluate(response)
-        print(f"Evaluation result (ProgMgr): {evaluation[:200]}...")  # type: ignore
-    except Exception as exc:
+        model_evaluation = program_manager_evaluation_agent.evaluate(agent_response)
+        print(f"Evaluation result (ProgMgr): {model_evaluation.get("final_response", "")}")  # type: ignore
+    except Exception as e:
         logger.exception("Error while evaluating features.")
         return f"[ERROR] Failed to evaluate features for query: {query}"
-    return evaluation  # type: ignore
+    
+    return model_evaluation.get("final_response", "")
 
 
 def development_engineer_support_function(query: str) -> str:
@@ -277,19 +279,20 @@ def development_engineer_support_function(query: str) -> str:
     """
     print(f"Development Engineer support function called with query: {query}")
     try:
-        response = development_engineer_knowledge_agent.respond(input_text=query)
-        print(f"Knowledge agent response (DevEng): {response[:200]}...")  # type: ignore
-    except Exception as exc:
+        agent_response = development_engineer_knowledge_agent.respond(input_text=query)
+        print(f"Knowledge agent response (DevEng): {agent_response}")  # type: ignore
+    except Exception as e:
         logger.exception("Error while generating tasks.")
         return f"[ERROR] Failed to generate tasks for query: {query}"
 
     try:
-        evaluation = development_engineer_evaluation_agent.evaluate(response)
-        print(f"Evaluation result (DevEng): {evaluation[:200]}...")  # type: ignore
-    except Exception as exc:
+        model_evaluation = development_engineer_evaluation_agent.evaluate(agent_response)
+        print(f"Evaluation result (DevEng): {model_evaluation.get("final_response", "")}")  # type: ignore
+    except Exception as e:
         logger.exception("Error while evaluating tasks.")
         return f"[ERROR] Failed to evaluate tasks for query: {query}"
-    return evaluation  # type: ignore
+    
+    return model_evaluation.get("final_response", "")
 
 
 # ------------------------------------------------------------------
@@ -317,7 +320,7 @@ try:
             },
         ],
     )
-except Exception as exc:
+except Exception as e:
     logger.exception("Failed to instantiate RoutingAgent.")
     sys.exit(1)
 
@@ -325,7 +328,7 @@ except Exception as exc:
 # Run the workflow
 # ------------------------------------------------------------------
 
-print("Workflow execution started.")
+print("*** Workflow execution started. ***\n\n")
 
 workflow_prompt = "What would the development tasks for this product be?"
 print(f"Workflow prompt: {workflow_prompt}")
@@ -344,7 +347,7 @@ try:
         print(f"Executing step: {step}")
         try:
             result = routing_agent.route(step)
-        except Exception as exc:
+        except Exception as e:
             logger.exception(f"Routing failed for step: {step}")
             result = f"[ERROR] Routing failed for step: {step}"
         completed_steps.append(result)
@@ -354,6 +357,6 @@ try:
         final_output = completed_steps[-1]
         print(f"Final output: {final_output}")
         print("\n*** Workflow execution completed ***\n")
-except Exception as exc:
+except Exception as e:
     logger.exception("An unexpected error occurred during workflow execution.")
     sys.exit(1)
